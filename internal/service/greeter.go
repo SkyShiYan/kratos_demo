@@ -6,7 +6,6 @@ import (
 	v1 "helloworld2/api/helloworld/v1"
 	"helloworld2/internal/biz"
 
-	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/log"
 )
 
@@ -31,10 +30,16 @@ func (s *GreeterService) SayHello(ctx context.Context, in *v1.HelloRequest) (*v1
 	} else {
 		s.log.Infof("插入数据成功 %v", id)
 	}
-	s.log.Infof("SayHello Received: %v", in.GetName())
-	s.uc.Update(&biz.Greeter{Hello: "ssss"})
-	if in.GetName() == "error" {
-		return nil, errors.NotFound("ErrorReason", in.GetName())
-	}
+	// s.log.Infof("SayHello Received: %v", in.GetName())
+	// s.uc.Update(&biz.Greeter{Hello: "ssss"})
+	// if in.GetName() == "error" {
+	// return nil, errors.NotFound("ErrorReason", in.GetName())
+	// }
 	return &v1.HelloReply{Message: "Hello " + in.GetName()}, nil
+}
+
+// SayHello implements helloworld.GreeterServer
+func (s *GreeterService) GetTest(ctx context.Context, in *v1.HelloRequest) (*v1.HelloReply, error) {
+	content, err := s.uc.Get(ctx, &biz.Greeter{Hello: in.GetName()})
+	return &v1.HelloReply{Message: "Hello " + in.GetName() + "-Content:" + content}, err
 }

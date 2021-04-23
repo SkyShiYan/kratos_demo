@@ -13,6 +13,7 @@ type Greeter struct {
 type GreeterRepo interface {
 	CreateGreeter(ctx context.Context, g *Greeter) (int, error)
 	UpdateGreeter(*Greeter) error
+	GetGreeter(ctx context.Context, greeter *Greeter) (string, error)
 }
 
 type GreeterUsecase struct {
@@ -25,10 +26,13 @@ func NewGreeterUsecase(repo GreeterRepo, logger log.Logger) *GreeterUsecase {
 }
 
 func (uc *GreeterUsecase) Create(ctx context.Context, g *Greeter) (int, error) {
-	id, err := uc.repo.CreateGreeter(ctx, g)
-	return id, err
+	return uc.repo.CreateGreeter(ctx, g)
 }
 
 func (uc *GreeterUsecase) Update(g *Greeter) error {
 	return uc.repo.UpdateGreeter(g)
+}
+
+func (uc *GreeterUsecase) Get(ctx context.Context, g *Greeter) (string, error) {
+	return uc.repo.GetGreeter(ctx, g)
 }

@@ -28,16 +28,23 @@ func NewGreeterRepo(data *Data, logger log.Logger) biz.GreeterRepo {
 }
 
 func (r *greeterRepo) CreateGreeter(ctx context.Context, g *biz.Greeter) (int, error) {
-	r.log.Infof("asdasdad---CreateGreeter--%v", g.Hello)
 	s := &Articles{
 		Title:   g.Hello,
 		Content: g.Hello + "-Content",
 	}
-	r.data.db.Create(s)
-	return 0, nil
+	result := r.data.db.Create(&s)
+	// 返回数据插入的主键
+	return int(s.ID), result.Error
 }
 
 func (r *greeterRepo) UpdateGreeter(g *biz.Greeter) error {
-	r.log.Infof("asdasdad---UpdateGreeter--%v", g.Hello)
 	return nil
+}
+
+func (r *greeterRepo) GetGreeter(ctx context.Context, g *biz.Greeter) (string, error) {
+	s := &Articles{
+		Title: g.Hello,
+	}
+	result := r.data.db.Where("title = ?", g.Hello).First(&s)
+	return s.Content, result.Error
 }
