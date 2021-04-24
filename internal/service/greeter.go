@@ -7,6 +7,7 @@ import (
 	"helloworld2/internal/biz"
 
 	"github.com/go-kratos/kratos/v2/log"
+	"gorm.io/gorm"
 )
 
 // GreeterService is a greeter service.
@@ -41,5 +42,17 @@ func (s *GreeterService) SayHello(ctx context.Context, in *v1.HelloRequest) (*v1
 // SayHello implements helloworld.GreeterServer
 func (s *GreeterService) GetTest(ctx context.Context, in *v1.HelloRequest) (*v1.HelloReply, error) {
 	content, err := s.uc.Get(ctx, &biz.Greeter{Hello: in.GetName()})
+	if err == gorm.ErrRecordNotFound {
+		return &v1.HelloReply{Message: "用户未找到"}, nil
+	}
+	return &v1.HelloReply{Message: "Hello " + in.GetName() + "-Content:" + content}, err
+}
+
+// 保存数据
+func (s *GreeterService) SetTest(ctx context.Context, in *v1.HelloRequest) (*v1.HelloReply, error) {
+	content, err := s.uc.Get(ctx, &biz.Greeter{Hello: in.GetName()})
+	if err == gorm.ErrRecordNotFound {
+		return &v1.HelloReply{Message: "用户未找到"}, nil
+	}
 	return &v1.HelloReply{Message: "Hello " + in.GetName() + "-Content:" + content}, err
 }

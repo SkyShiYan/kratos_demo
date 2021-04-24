@@ -62,7 +62,8 @@ func NewData(conf *conf.Data, logger log.Logger) (*Data, func(), error) {
 		logger.Print("message", "closing the data resources")
 		sqlDB, err := d.db.DB()
 		if err != nil {
-			logger.Print("message", "DB也报错了")
+			logger.Print("message", "DB也报错了", err)
+			return
 		}
 		sqlDB.Close()
 	}, nil

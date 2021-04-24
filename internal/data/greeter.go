@@ -45,6 +45,10 @@ func (r *greeterRepo) GetGreeter(ctx context.Context, g *biz.Greeter) (string, e
 	s := &Articles{
 		Title: g.Hello,
 	}
-	result := r.data.db.Where("title = ?", g.Hello).First(&s)
-	return s.Content, result.Error
+	result := r.data.db.Where("title = ?", g.Hello).First(&s).Error
+	if result == gorm.ErrInvaildDB {
+		panic("错误的数据库")
+	}
+
+	return s.Content, result
 }
