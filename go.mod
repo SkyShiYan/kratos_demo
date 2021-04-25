@@ -9,7 +9,7 @@ require (
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/google/wire v0.5.0
 	github.com/gorilla/mux v1.8.0
-	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
 	google.golang.org/genproto v0.0.0-20210309190941-1aeedc14537d
 	google.golang.org/grpc v1.36.0
 	google.golang.org/protobuf v1.25.1-0.20200805231151-a709e31e5d12
