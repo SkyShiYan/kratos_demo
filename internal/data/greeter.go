@@ -5,6 +5,7 @@ import (
 	"helloworld2/internal/biz"
 
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/pkg/errors"
 	"gorm.io/gorm"
 )
 
@@ -34,7 +35,7 @@ func (r *greeterRepo) CreateGreeter(ctx context.Context, g *biz.Greeter) (int, e
 	}
 	result := r.data.db.Create(&s)
 	// 返回数据插入的主键
-	return int(s.ID), result.Error
+	return int(s.ID), errors.Wrap(result.Error, "插入失败")
 }
 
 func (r *greeterRepo) UpdateGreeter(g *biz.Greeter) error {
